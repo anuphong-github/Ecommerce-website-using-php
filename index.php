@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Ecommerce</title>
-  </head>
-  <body>
-    
-  </body>
-</html>
+<?php
+ include "include/header.php";
+ include "include/navbar.php";
+ include "include/footer.php";
+ ?>
