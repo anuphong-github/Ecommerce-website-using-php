@@ -13,16 +13,13 @@
         $title = $_POST['title'];
         $fname = $_POST['fname'];
         $lname = $_POST['lname'];
-
-
           $sql = "INSERT INTO `tb_supplier`(`supplier_id`, `supplierTitle`, `supplierFname`, `supplierLname`)
                 VALUES (NULL,'$title','$fname','$lname')";
           $query = $connection->query($sql);
-
           if($query){
-                  echo "<script>alert('สำเร็จ');</script>";
+              echo "<script>alert('สำเร็จ');</script>";
           }else {
-                  echo "<script>alert('ไม่สำเร็จ');</script>";
+              echo "<script>alert('ไม่สำเร็จ');</script>";
           }
         }
 
