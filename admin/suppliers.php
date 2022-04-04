@@ -21,7 +21,6 @@
         $query = $connection->query($sql);
         $i=0;
         while ($row = mysqli_fetch_array($query)) {
-
         $i+=1;
          ?>
         <tr>
