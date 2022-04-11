@@ -11,8 +11,6 @@
       <?php
       include "../config/connect.php";
       require_once "functions/check-form-product.php";
-
-
        ?>
        <form class="" action="" method="post" enctype="multipart/form-data">
 
@@ -51,11 +49,41 @@
       </div>
       <div class="">
         <label for="">Supplier</label>
-        <input type="text" name="supplier" id="supplier" class="form-control" value="">
+        <?php
+        //bug created by anuphong
+        $sql = "SELECT `supplier_id`, `supplierTitle`, `supplierFname`, `supplierLname` FROM `tb_supplier` WHERE 1";
+        $query = $connection->query($sql);
+
+         ?>
+        <select class="form-control" name="supplier_id">
+          <?php
+          while($row = mysqli_fetch_array($query)){
+            ?>
+            <option value="<?=$row['supplier_id'];?>"><?=$row['supplierTitle'];?>,<?=$row['supplierFname'];?>,<?=$row['supplierLname'];?></option>
+        <?php
+          }
+           ?>
+        </select>
+
       </div>
       <div class="mb-2">
         <label for="">Category</label>
-        <input type="text" name="category" id="category"  class="form-control" value="">
+        <?php
+        //bug created by anuphong
+        $sql = "SELECT `category_id`, `category_name`, `description`, `picture`
+                FROM `tb_category` WHERE 1";
+        $query = $connection->query($sql);
+         ?>
+         <select class="form-control" name="category_id">
+           <?php
+            while($row = mysqli_fetch_array($query)){
+             ?>
+                 <option value="<?=$row['category_id'];?>"><?=$row['category_name'];?></option>
+          <?php
+           }
+            ?>
+         </select>
+
       </div>
       <div class="mb-2">
         <label for="">Description</label>

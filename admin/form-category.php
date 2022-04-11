@@ -17,7 +17,7 @@
           $temp = explode('.',$_FILES['pic_file']['name']);
           $pic = round(microtime(true)) . '.' . end($temp);
 
-          if(move_uploaded_file($_FILES['pic_file']['tmp_name'], 'images/category/' .$pic)){
+          if(move_uploaded_file($_FILES['pic_file']['tmp_name'], '../images/category/' .$pic)){
 
           $sql = "INSERT INTO `tb_category`(`category_id`, `category_name`, `description`, `picture`)
                   VALUES (NULL,'$title','$desc','$pic')";

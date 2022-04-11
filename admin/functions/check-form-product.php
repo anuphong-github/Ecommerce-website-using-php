@@ -1,9 +1,7 @@
 <?php
 if(isset($_POST['submit'])){
 
-
-
-  function GetLastID(){
+  function getLastID(){
     $connection = $GLOBALS['connection'];
     $s = $connection->prepare('SELECT * FROM tb_product');
     $s->execute();
@@ -11,7 +9,7 @@ if(isset($_POST['submit'])){
     $result = $s->get_result();
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
-          $last = $row['product'];
+          $last = $row['product_id'];
       }
         return $last;
       }else{
@@ -19,7 +17,7 @@ if(isset($_POST['submit'])){
       }
     }
 
-  $product_id = GetLastID() + 1;
+  $product_id = getLastID() + 1;
 
   $pathpic1 = "../images/product/p1/";
   $filepic1 = $pathpic1 . basename($_FILES["p1"]["name"]);
@@ -143,20 +141,16 @@ if(isset($_POST['submit'])){
             VALUES (null,'$picture3','$product_id')";
   mysqli_query($connection,$sqlpic);
 
-
-
   $name = $_POST['name'];
   $unitPrice = $_POST['unitPrice'];
   $discount = $_POST['discount'];
   $address = $_POST['address'];
-  $supplier = $_POST['supplier'];
-  $category = $_POST['category'];
+  $supplier_id  = $_POST['supplier_id'];
+  $category_id = $_POST['category_id'];
   $desc = $_POST['desc'];
   $thumbnail=$_FILES["thumbnail"]["name"];
 
-  $picture_id = "0";
-  $supplier_id = "0";
-  $category_id = "0";
+
   $date = Date('Y-m-d');
   $datecreated = Date('Y-m-d H:i:s');
 
@@ -193,7 +187,6 @@ if(isset($_POST['submit'])){
       echo "Sorry, there was an error uploading your picture";
     }
   }
-
   $sqladdproduct = "INSERT INTO `tb_product`(`product_id`, `name`, `UnitPrice`,
                                   `UnitsOnOrder`, `discount`, `Description`,
                                   `address`, `picture_id`, `thumbnail`,
@@ -201,11 +194,10 @@ if(isset($_POST['submit'])){
                                   `datecreated`)
           VALUES (NULL,'$name','$unitPrice',
                   '0','$discount','$desc',
-                  '$address','$picture_id','$thumbnail',
+                  '$address','$product_id','$thumbnail',
                   '$supplier_id','$category_id','$date',
                   '$datecreated')";
     $query = $connection->query($sqladdproduct);
-
       if($query){
         echo "สำเร็จ";
       }else{
