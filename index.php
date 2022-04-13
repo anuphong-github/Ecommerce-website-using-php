@@ -9,6 +9,7 @@
   </head>
   <body>
     <?php
+
      require_once "config/connect.php";
     ?>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -38,6 +39,7 @@
     <!--Open main!-->
     <main>
       <div class="container">
+
         <div class="row">
           <!-- open sidebar !-->
           <div class="col-lg-4">
@@ -54,13 +56,17 @@
                 <?php
                 while($row=mysqli_fetch_array($query_cat)){
                  ?>
-                <a href="#" class="list-group-item"><?=$row['category_name'];?></a>
+                <a href="index.php?id_category=<?=$row['category_id'];?>" class="list-group-item"><?=$row['category_name'];?></a>
               <?php } ?>
               </div>
             </div>
           </div>
           <!-- close sidebar !-->
 
+           <?php
+           @$id_category = $_GET['id_category'];
+           if(@$id_category == ""){
+            ?>
           <div class="col-lg-8">
               <div class="row">
                 <div class="col-lg-12">
@@ -129,6 +135,132 @@
               </div>
           </div>
 
+        <?php }else{ ?>
+
+          <?php
+          $page  = isset($_GET['page']) ? (int)$_GET['page'] :1 ;
+          $perpage = isset($_GET['per-page']) && $_GET['per-page'] <= 20 ? (int)$_GET['per-page'] : 20;
+
+          $start = ($page>1) ?($page * $perpage) - $perpage :0;
+          $queryproduct = "SELECT `product_id`, `name`, `UnitPrice`, `UnitsOnOrder`, `discount`, `Description`, `address`, `picture_id`, `thumbnail`, `supplier_id`, `category_id`, `date`, `datecreated`
+          FROM `tb_product`
+           WHERE `category_id` ='{$id_category}'  ORDER BY id DESC LIMIT {$start}, 20";
+           ?>
+
+           <div class="col-lg-8">
+
+
+               <div class="row">
+                 <div class="col-lg-4">
+                   <div class="card">
+                       <img src="Imagesfortest/1.jpg" class="card-img-top" alt="...">
+                       <div class="card-body">
+                         <h5 class="card-title">Keyboard</h5>
+                         <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                         </p>
+
+                       </div>
+                     </div>
+                 </div>
+                 <div class="col-lg-4">
+                   <div class="card">
+                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
+                       <div class="card-body">
+                         <h5 class="card-title">Mouse </h5>
+                         <p class="card-text">It is a long established fact that a reader will be distracted
+                                               by the readable content of a page when looking at its layout.</p>
+
+                       </div>
+                     </div>
+                 </div>
+                 <div class="col-lg-4">
+                   <div class="card">
+                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
+                       <div class="card-body">
+                         <h5 class="card-title">Hard disk</h5>
+                         <p class="card-text">There are many variations of passages of Lorem Ipsum available,
+                                               but the majority have suffered alteration in some form.</p>
+
+                       </div>
+                     </div>
+                 </div>
+               </div>
+               <hr class="extra-margins">
+               <div class="row">
+                 <div class="col-lg-4">
+                   <div class="card">
+                       <img src="Imagesfortest/1.jpg" class="card-img-top" alt="...">
+                       <div class="card-body">
+                         <h5 class="card-title">Keyboard</h5>
+                         <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                         </p>
+
+                       </div>
+                     </div>
+                 </div>
+                 <div class="col-lg-4">
+                   <div class="card">
+                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
+                       <div class="card-body">
+                         <h5 class="card-title">Mouse </h5>
+                         <p class="card-text">It is a long established fact that a reader will be distracted
+                                               by the readable content of a page when looking at its layout.</p>
+
+                       </div>
+                     </div>
+                 </div>
+                 <div class="col-lg-4">
+                   <div class="card">
+                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
+                       <div class="card-body">
+                         <h5 class="card-title">Hard disk</h5>
+                         <p class="card-text">There are many variations of passages of Lorem Ipsum available,
+                                               but the majority have suffered alteration in some form.</p>
+
+                       </div>
+                     </div>
+                 </div>
+               </div>
+               <hr class="extra-margins">
+               <div class="row">
+                 <div class="col-lg-4">
+                   <div class="card">
+                       <img src="Imagesfortest/1.jpg" class="card-img-top" alt="...">
+                       <div class="card-body">
+                         <h5 class="card-title">Keyboard</h5>
+                         <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                         </p>
+
+                       </div>
+                     </div>
+                 </div>
+                 <div class="col-lg-4">
+                   <div class="card">
+                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
+                       <div class="card-body">
+                         <h5 class="card-title">Mouse </h5>
+                         <p class="card-text">It is a long established fact that a reader will be distracted
+                                               by the readable content of a page when looking at its layout.</p>
+
+                       </div>
+                     </div>
+                 </div>
+                 <div class="col-lg-4">
+                   <div class="card">
+                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
+                       <div class="card-body">
+                         <h5 class="card-title">Hard disk</h5>
+                         <p class="card-text">There are many variations of passages of Lorem Ipsum available,
+                                               but the majority have suffered alteration in some form.</p>
+
+                       </div>
+                     </div>
+                 </div>
+               </div>
+               <hr class="extra-margins">
+           </div>
+
+        <?php } ?>
         </div>
       </div>
       <!--Close main!-->
