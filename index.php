@@ -52,7 +52,7 @@
               $query_cat = $connection->query($sql_cat);
                ?>
               <div class="list-group">
-                <a href="#" class="list-group-item active">Home</a>
+                <a href="index.php" class="list-group-item active">Home</a>
                 <?php
                 while($row=mysqli_fetch_array($query_cat)){
                  ?>
@@ -139,127 +139,101 @@
 
           <?php
           $page  = isset($_GET['page']) ? (int)$_GET['page'] :1 ;
-          $perpage = isset($_GET['per-page']) && $_GET['per-page'] <= 20 ? (int)$_GET['per-page'] : 20;
+          $perpage = isset($_GET['per-page']) && $_GET['per-page'] <= 9 ? (int)$_GET['per-page'] : 9;
 
           $start = ($page>1) ?($page * $perpage) - $perpage :0;
-          $queryproduct = "SELECT `product_id`, `name`, `UnitPrice`, `UnitsOnOrder`, `discount`, `Description`, `address`, `picture_id`, `thumbnail`, `supplier_id`, `category_id`, `date`, `datecreated`
+          $queryproduct = "SELECT `product_id`, `name`, `UnitPrice`, `UnitsOnOrder`, `discount`,
+                                  `Description`, `address`, `picture_id`, `thumbnail`,
+                                  `supplier_id`, `category_id`, `date`, `datecreated`
           FROM `tb_product`
-           WHERE `category_id` ='{$id_category}'  ORDER BY id DESC LIMIT {$start}, 20";
+           WHERE `category_id` ='{$id_category}'  ORDER BY `product_id` DESC LIMIT {$start}, 9";
+
+           $result = $connection->query($queryproduct);
+
+           $total = $connection->query("SELECT FOUND_ROWS() as total")->fetch_assoc()['total'];
+           $pages = ceil($total/$perpage);
+
            ?>
 
            <div class="col-lg-8">
-
-
+             <hr class="extra-margins">
                <div class="row">
+                 <?php
+
+                 if($result->num_rows > 0){
+                   $i=0;
+                   while($row = $result->fetch_assoc()){
+                     $i++;
+                      $name = $row['name'];
+                      $UnitPrice = $row['UnitPrice'];
+                      $UnitsOnOrder = $row['UnitsOnOrder'];
+                      $discount = $row['discount'];
+                      $description = $row['Description'];
+                      $picture_id = $row['picture_id'];
+                      $thumbnail = $row['thumbnail'];
+                      $supplier_id = $row['supplier_id'];
+                      $category_id = $row['category_id'];
+                      $date = $row['date'];
+                      $datecreated = $row['datecreated'];
+                  ?>
+                  <?php
+                  if($i % 3==0){
+                ?>
+
                  <div class="col-lg-4">
                    <div class="card">
-                       <img src="Imagesfortest/1.jpg" class="card-img-top" alt="...">
+                       <img src="images/product/products/<?php echo $thumbnail; ?>" class="card-img-top" alt="...">
                        <div class="card-body">
-                         <h5 class="card-title">Keyboard</h5>
+                         <h5 class="card-title"><?php echo $name; ?></h5>
                          <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                          </p>
-
                        </div>
                      </div>
-                 </div>
-                 <div class="col-lg-4">
-                   <div class="card">
-                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
-                       <div class="card-body">
-                         <h5 class="card-title">Mouse </h5>
-                         <p class="card-text">It is a long established fact that a reader will be distracted
-                                               by the readable content of a page when looking at its layout.</p>
 
-                       </div>
-                     </div>
                  </div>
-                 <div class="col-lg-4">
-                   <div class="card">
-                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
-                       <div class="card-body">
-                         <h5 class="card-title">Hard disk</h5>
-                         <p class="card-text">There are many variations of passages of Lorem Ipsum available,
-                                               but the majority have suffered alteration in some form.</p>
+                 <div class="">
+                     <hr class="extra-margins">
+                 </div>
 
-                       </div>
-                     </div>
-                 </div>
-               </div>
-               <hr class="extra-margins">
-               <div class="row">
+
+               <?php }else{ ?>
+
                  <div class="col-lg-4">
                    <div class="card">
-                       <img src="Imagesfortest/1.jpg" class="card-img-top" alt="...">
+                       <img src="images/product/products/<?php echo $thumbnail; ?>" class="card-img-top" alt="...">
                        <div class="card-body">
-                         <h5 class="card-title">Keyboard</h5>
+                         <h5 class="card-title"><?php echo $name; ?></h5>
                          <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                          </p>
-
                        </div>
                      </div>
                  </div>
-                 <div class="col-lg-4">
-                   <div class="card">
-                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
-                       <div class="card-body">
-                         <h5 class="card-title">Mouse </h5>
-                         <p class="card-text">It is a long established fact that a reader will be distracted
-                                               by the readable content of a page when looking at its layout.</p>
-
-                       </div>
-                     </div>
-                 </div>
-                 <div class="col-lg-4">
-                   <div class="card">
-                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
-                       <div class="card-body">
-                         <h5 class="card-title">Hard disk</h5>
-                         <p class="card-text">There are many variations of passages of Lorem Ipsum available,
-                                               but the majority have suffered alteration in some form.</p>
-
-                       </div>
-                     </div>
-                 </div>
+               <?php } ?>
+                 <?php
+               }
+             }
+                  ?>
                </div>
-               <hr class="extra-margins">
-               <div class="row">
-                 <div class="col-lg-4">
-                   <div class="card">
-                       <img src="Imagesfortest/1.jpg" class="card-img-top" alt="...">
-                       <div class="card-body">
-                         <h5 class="card-title">Keyboard</h5>
-                         <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                         </p>
 
-                       </div>
-                     </div>
-                 </div>
-                 <div class="col-lg-4">
-                   <div class="card">
-                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
-                       <div class="card-body">
-                         <h5 class="card-title">Mouse </h5>
-                         <p class="card-text">It is a long established fact that a reader will be distracted
-                                               by the readable content of a page when looking at its layout.</p>
-
-                       </div>
-                     </div>
-                 </div>
-                 <div class="col-lg-4">
-                   <div class="card">
-                       <img src="Imagesfortest/2.jpg" class="card-img-top" alt="...">
-                       <div class="card-body">
-                         <h5 class="card-title">Hard disk</h5>
-                         <p class="card-text">There are many variations of passages of Lorem Ipsum available,
-                                               but the majority have suffered alteration in some form.</p>
-
-                       </div>
-                     </div>
-                 </div>
+               <div class="">
+                 <br>
+                 <nav aria-label="Page navigation example">
+                   <ul class="pagination justify-content-center">
+                     <li class="page-item disabled">
+                       <a class="page-link">Previous</a>
+                     </li>
+                     <li class="page-item"><a class="page-link" href="#">1</a></li>
+                     <li class="page-item"><a class="page-link" href="#">2</a></li>
+                     <li class="page-item"><a class="page-link" href="#">3</a></li>
+                     <li class="page-item">
+                       <a class="page-link" href="#">Next</a>
+                     </li>
+                   </ul>
+                 </nav>
                </div>
-               <hr class="extra-margins">
+
+
            </div>
-
         <?php } ?>
         </div>
       </div>
