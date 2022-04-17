@@ -56,7 +56,7 @@
                 <?php
                 while($row=mysqli_fetch_array($query_cat)){
                  ?>
-                <a href="index.php?id_category=<?=$row['category_id'];?>" class="list-group-item"><?=$row['category_name'];?></a>
+                <a href="index.php?id_category=<?=$row['category_id'];?>?page=1&per-page=17" class="list-group-item"><?=$row['category_name'];?></a>
               <?php } ?>
               </div>
             </div>
@@ -138,20 +138,23 @@
         <?php }else{ ?>
 
           <?php
-          $page  = isset($_GET['page']) ? (int)$_GET['page'] :1 ;
-          $perpage = isset($_GET['per-page']) && $_GET['per-page'] <= 9 ? (int)$_GET['per-page'] : 9;
+          $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1 ;
 
-          $start = ($page>1) ?($page * $perpage) - $perpage :0;
+          $perpage = isset($_GET['per-page']) <= 18 ? (int)$_GET['per-page'] : 18;
+
+          $start = ($page>1) ?($page * $perpage) - $perpage : 0 ;
+
           $queryproduct = "SELECT `product_id`, `name`, `UnitPrice`, `UnitsOnOrder`, `discount`,
                                   `Description`, `address`, `picture_id`, `thumbnail`,
                                   `supplier_id`, `category_id`, `date`, `datecreated`
           FROM `tb_product`
-           WHERE `category_id` ='{$id_category}'  ORDER BY `product_id` DESC LIMIT {$start}, 9";
+          WHERE `category_id` ='{$id_category}'  ORDER BY `product_id` DESC LIMIT {$start}, 18";
 
            $result = $connection->query($queryproduct);
 
            $total = $connection->query("SELECT FOUND_ROWS() as total")->fetch_assoc()['total'];
            $pages = ceil($total/$perpage);
+
 
            ?>
 
@@ -177,7 +180,7 @@
                       $datecreated = $row['datecreated'];
                   ?>
                   <?php
-                  if($i % 3==0){
+                  if($i%3==0){
                 ?>
 
                  <div class="col-lg-4">
@@ -215,23 +218,31 @@
                   ?>
                </div>
 
+
                <div class="">
                  <br>
                  <nav aria-label="Page navigation example">
-                   <ul class="pagination justify-content-center">
-                     <li class="page-item disabled">
-                       <a class="page-link">Previous</a>
+                   <ul class="pagination justify-content-center <?php if($total<17){echo "hide";} ?>">
+
+                     <li class="page-item <?php if($page == 1){echo "disabled";} ?>">
+                       <a class="page-link" href="?id_category=<?php echo $id_category; ?>&page=<?php echo $page-1; ?>&per-page=17">Previous</a>
                      </li>
-                     <li class="page-item"><a class="page-link" href="#">1</a></li>
-                     <li class="page-item"><a class="page-link" href="#">2</a></li>
-                     <li class="page-item"><a class="page-link" href="#">3</a></li>
-                     <li class="page-item">
-                       <a class="page-link" href="#">Next</a>
+
+                      <?php for($x=1; $x <= $pages; $x++) : $y = $x ?>
+
+                      <li class="page-item <?php if($page === $x){echo "active";}
+                      else if ($page < ($x+1) or $page > ($x +1)){echo "hide";}?>">
+                        <a class="page-link" href="?id_category=<?php echo $id_category; ?>&page=<?php echo "$x";?>&per-page=17"><?php echo $x; ?></a>
+                      </li>
+                    <?php endfor; ?>
+
+                     <li class="page-item <?php if($page == $y)echo "disabled"; ?>">
+                       <a class="page-link" href="?id_category=<?php echo $id_category; ?>&page=<?php echo $page+1 ?>&per-page=17">Next</a>
                      </li>
+
                    </ul>
                  </nav>
                </div>
-
 
            </div>
         <?php } ?>
